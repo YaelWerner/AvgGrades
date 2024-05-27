@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    text-align: center;
+}
+
+.grade-row {
+    margin-bottom: 10px;
+}
+
+input {
+    margin: 5px;
+}
