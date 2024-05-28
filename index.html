@@ -10,11 +10,20 @@
     <div class="container">
         <h1>חישוב ממוצע משוקלל</h1>
         <form id="gradesForm">
-            <div class="grade-row">
-                <input type="number" name="grade" placeholder="ציון" required>
-                <input type="number" name="weight" placeholder="משקל" required>
+            <h2>מטלות</h2>
+            <div id="assignments">
+                <div class="grade-row">
+                    <input type="number" name="grade" placeholder="ציון" min="0" max="100" required>
+                    <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
+                </div>
             </div>
-            <button type="button" onclick="addGradeRow()">הוסף ציון</button>
+            <button type="button" onclick="addGradeRow()">הוסף מטלה</button>
+
+            <h2>בחינה</h2>
+            <div class="grade-row">
+                <input type="number" id="examGrade" placeholder="ציון בחינה" min="0" max="100" required>
+            </div>
+
             <button type="submit">חשב ממוצע</button>
         </form>
         <p id="averageResult"></p>
