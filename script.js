@@ -8,11 +8,17 @@ function addGradeRow() {
     const gradeRow = document.createElement('div');
     gradeRow.classList.add('grade-row');
     gradeRow.innerHTML = `
-        <input type="text" name="courseName" placeholder="שם הקורס" required>
+        <input type="text" name="courseName" placeholder="שם הקורס">
         <input type="number" name="grade" placeholder="ציון" min="0" max="100" required>
         <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
+        <button type="button" class="remove-course" onclick="removeGradeRow(this)">הסר קורס</button>
     `;
     form.insertBefore(gradeRow, form.children[form.children.length - 2]);
+}
+
+function removeGradeRow(button) {
+    const gradeRow = button.parentElement;
+    gradeRow.remove();
 }
 
 function calculateAverage() {
@@ -26,6 +32,11 @@ function calculateAverage() {
         totalWeightedSum += parseFloat(grade.value) * weight;
         totalWeights += weight;
     });
+
+    if (totalWeights === 0) {
+        document.getElementById('averageResult').innerText = "יש להזין לפחות קורס אחד עם ציון ומשקל.";
+        return;
+    }
 
     const average = totalWeightedSum / totalWeights;
     document.getElementById('averageResult').innerText = `הממוצע המשוקלל הוא: ${average.toFixed(2)}`;
