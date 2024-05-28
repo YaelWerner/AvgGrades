@@ -8,6 +8,7 @@ function addGradeRow() {
     const gradeRow = document.createElement('div');
     gradeRow.classList.add('grade-row');
     gradeRow.innerHTML = `
+        <input type="text" name="courseName" placeholder="שם הקורס" required>
         <input type="number" name="grade" placeholder="ציון" min="0" max="100" required>
         <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
     `;
