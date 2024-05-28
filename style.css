@@ -1,5 +1,5 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     direction: rtl;
     text-align: center;
     background-color: #f0f0f0;
@@ -13,21 +13,20 @@ body {
     margin: 50px auto;
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
 
 h1, h2 {
     color: #4CAF50;
-    font-size: 2.5em;
+    font-size: 2em;
     margin-bottom: 20px;
 }
 
 .grade-row {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
 input[type="text"], input[type="number"] {
@@ -48,26 +47,14 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: #45a049;
 }
 
-.calculate-button {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.2em;
-}
-
 #averageResult {
     margin-top: 20px;
-    font-size: 1.5em;
+    font-size: 1.2em;
     font-weight: bold;
-    color: #333;
-    background-color: #e7ffe6;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #4CAF50;
 }
