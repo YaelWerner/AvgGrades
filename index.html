@@ -7,16 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>חישוב ממוצע משוקלל</h1>
-    <form id="gradesForm">
-        <div class="grade-row">
-            <input type="number" name="grade" placeholder="ציון" required>
-            <input type="number" name="weight" placeholder="משקל" required>
-        </div>
-        <button type="button" onclick="addGradeRow()">הוסף ציון</button>
-        <button type="submit">חשב ממוצע</button>
-    </form>
-    <p id="averageResult"></p>
+    <div class="container">
+        <h1>חישוב ממוצע משוקלל</h1>
+        <form id="gradesForm">
+            <div class="grade-row">
+                <input type="number" name="grade" placeholder="ציון" required>
+                <input type="number" name="weight" placeholder="משקל" required>
+            </div>
+            <button type="button" onclick="addGradeRow()">הוסף ציון</button>
+            <button type="submit">חשב ממוצע</button>
+        </form>
+        <p id="averageResult"></p>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
