@@ -4,19 +4,20 @@ document.getElementById('gradesForm').addEventListener('submit', function(e) {
 });
 
 function addGradeRow() {
-    const form = document.getElementById('gradesForm');
+    const assignmentsDiv = document.getElementById('assignments');
     const gradeRow = document.createElement('div');
     gradeRow.classList.add('grade-row');
     gradeRow.innerHTML = `
-        <input type="number" name="grade" placeholder="ציון" required>
-        <input type="number" name="weight" placeholder="משקל" required>
+        <input type="number" name="grade" placeholder="ציון" min="0" max="100" required>
+        <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
     `;
-    form.insertBefore(gradeRow, form.children[form.children.length - 2]);
+    assignmentsDiv.appendChild(gradeRow);
 }
 
 function calculateAverage() {
     const grades = document.querySelectorAll('input[name="grade"]');
     const weights = document.querySelectorAll('input[name="weight"]');
+    const examGrade = parseFloat(document.getElementById('examGrade').value);
     let totalWeightedSum = 0;
     let totalWeights = 0;
 
@@ -26,6 +27,9 @@ function calculateAverage() {
         totalWeights += weight;
     });
 
-    const average = totalWeightedSum / totalWeights;
+    const remainingWeight = 100 - totalWeights;
+    totalWeightedSum += examGrade * remainingWeight;
+
+    const average = totalWeightedSum / 100;
     document.getElementById('averageResult').innerText = `הממוצע המשוקלל הוא: ${average.toFixed(2)}`;
 }
