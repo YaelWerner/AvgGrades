@@ -2,7 +2,10 @@ body {
     font-family: 'Arial', sans-serif;
     direction: rtl;
     text-align: center;
-    background-color: #f0f0f0;
+    background-image: url('assets/images/Purple-and-Blue-Gradient-Modern-Desktop-Wallpaper.png');
+    background-size: cover; /* למלא את כל המסך */
+    background-position: center; /* למרכז את התמונה */
+    background-repeat: no-repeat; /* לא לחזור על התמונה */
     color: #333;
     margin: 0;
     padding: 0;
@@ -12,7 +15,7 @@ body {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.9); /* רקע לבן עם שקיפות */
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
