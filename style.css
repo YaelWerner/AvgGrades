@@ -2,11 +2,8 @@ body {
     font-family: 'Arial', sans-serif;
     direction: rtl;
     text-align: center;
-    background-image: url('AvgGrades/Purple-and-Blue-Gradient-Modern-Desktop-Wallpaper.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: #333; /* התאמת צבע הטקסט ללבן */
+    background-color: #f0f0f0;
+    color: #333;
     margin: 0;
     padding: 0;
 }
@@ -15,13 +12,13 @@ body {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.7); /* שקיפות לרקע הקונטיינר */
+    background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
 
 h1 {
-    color: #FFD700; /* צבע זהב לכותרת */
+    color: #4CAF50;
     font-size: 2.5em;
     margin-bottom: 20px;
 }
