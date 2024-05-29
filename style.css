@@ -6,7 +6,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    color: #fff; /* התאמת צבע הטקסט ללבן */
+    color: #333; /* התאמת צבע הטקסט ללבן */
     margin: 0;
     padding: 0;
 }
