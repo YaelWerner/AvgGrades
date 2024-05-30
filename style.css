@@ -19,7 +19,7 @@ body {
 }
 
 h1 {
-    color: #FFD700; /* צבע זהב */
+    color: #fff
     font-size: 2.5em;
     margin-bottom: 20px;
 }
@@ -44,7 +44,7 @@ input[type="text"], input[type="number"] {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #9c7bbc;
     color: white;
     padding: 10px 20px;
     margin: 10px 5px;
@@ -56,7 +56,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #9c7bbc;
 }
 
 .calculate-button {
@@ -69,15 +69,15 @@ button:hover {
     margin-top: 20px;
     font-size: 1.5em;
     font-weight: bold;
-    color: #FFD700; /* צבע זהב */
+    color: #fff
     background-color: rgba(0, 0, 0, 0.5); /* צבע רקע כהה */
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #FFD700; /* צבע זהב */
+    border: 1px solid #fff; /* צבע זהב */
 }
 
 .remove-course {
-    background-color: #f44336;
+    background-color: #9c7bbc;
 }
 
 .remove-course:hover {
