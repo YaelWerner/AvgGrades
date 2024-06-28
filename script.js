@@ -14,7 +14,8 @@ function addGradeRow() {
         <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
         <button type="button" class="remove-course" onclick="removeGradeRow(this)">הסר קורס</button>
     `;
-    document.getElementById('gradesForm').appendChild(gradeRow);
+    const calculateButton = document.querySelector('.calculate-button');
+    document.getElementById('gradesForm').insertBefore(gradeRow, calculateButton);
 }
 
 function removeGradeRow(button) {
