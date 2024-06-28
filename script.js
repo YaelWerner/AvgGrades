@@ -9,9 +9,13 @@ function addGradeRow() {
     const gradeRow = document.createElement('div');
     gradeRow.className = 'grade-row';
     gradeRow.innerHTML = `
-        <input type="text" name="courseName" placeholder="שם הקורס" required>
+        <input type="text" name="courseName" placeholder="שם הקורס">
         <input type="number" name="grade" placeholder="ציון" min="0" max="100" required>
         <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
+        <select name="level">
+            <option value="regular">רגילה</option>
+            <option value="advanced">מתקדמת</option>
+        </select>
         <button type="button" class="remove-course" onclick="removeGradeRow(this)">הסר קורס</button>
     `;
     const lastGradeRow = document.querySelector('#gradesForm .grade-row:last-of-type');
@@ -35,8 +39,11 @@ function calculateAverage() {
     for (let row of gradeRows) {
         const grade = parseFloat(row.querySelector('input[name="grade"]').value);
         const weight = parseFloat(row.querySelector('input[name="weight"]').value);
-        totalWeightedGrades += grade * weight;
-        totalWeights += weight;
+        const level = row.querySelector('select[name="level"]').value;
+        const adjustedWeight = level === 'advanced' ? weight * 1.5 : weight;
+        
+        totalWeightedGrades += grade * adjustedWeight;
+        totalWeights += adjustedWeight;
     }
 
     const average = totalWeights ? (totalWeightedGrades / totalWeights).toFixed(2) : 0;
