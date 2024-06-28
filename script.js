@@ -1,43 +1,86 @@
-document.getElementById('gradesForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    calculateAverage();
-});
+import React, { useState } from 'react';
 
-function addGradeRow() {
-    const form = document.getElementById('gradesForm');
-    const gradeRow = document.createElement('div');
-    gradeRow.classList.add('grade-row');
-    gradeRow.innerHTML = `
-        <input type="text" name="courseName" placeholder="שם הקורס">
-        <input type="number" name="grade" placeholder="ציון" min="0" max="100" required>
-        <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
-        <button type="button" class="remove-course" onclick="removeGradeRow(this)">הסר קורס</button>
-    `;
-    form.insertBefore(gradeRow, form.children[form.children.length - 2]);
-}
+function App() {
+  const [students, setStudents] = useState([]);
+  const [newStudentName, setNewStudentName] = useState('');
+  const [newStudentGrade, setNewStudentGrade] = useState(0);
+  const [isAdvancedCourse, setIsAdvancedCourse] = useState(false);
 
-function removeGradeRow(button) {
-    const gradeRow = button.parentElement;
-    gradeRow.remove();
-}
-
-function calculateAverage() {
-    const grades = document.querySelectorAll('input[name="grade"]');
-    const weights = document.querySelectorAll('input[name="weight"]');
-    let totalWeightedSum = 0;
-    let totalWeights = 0;
-
-    grades.forEach((grade, index) => {
-        const weight = parseFloat(weights[index].value);
-        totalWeightedSum += parseFloat(grade.value) * weight;
-        totalWeights += weight;
-    });
-
-    if (totalWeights === 0) {
-        document.getElementById('averageResult').innerText = "יש להזין לפחות קורס אחד עם ציון ומשקל.";
-        return;
+  const handleAddStudent = () => {
+    if (newStudentName.trim() !== '' && newStudentGrade >= 0) {
+      setStudents([
+        ...students,
+        { name: newStudentName, grade: newStudentGrade, isAdvanced: isAdvancedCourse },
+      ]);
+      setNewStudentName('');
+      setNewStudentGrade(0);
+      setIsAdvancedCourse(false);
     }
+  };
 
-    const average = totalWeightedSum / totalWeights;
-    document.getElementById('averageResult').innerText = `הממוצע המשוקלל הוא: ${average.toFixed(2)}`;
+  const handleRemoveStudent = (index) => {
+    const newStudents = [...students];
+    newStudents.splice(index, 1);
+    setStudents(newStudents);
+  };
+
+  const calculateAverage = () => {
+    if (students.length === 0) return 0;
+    const sum = students.reduce((acc, student) => acc + (student.isAdvanced ? student.grade * 1.5 : student.grade), 0);
+    return sum / students.length;
+  };
+
+  return (
+    <div>
+      <h1>Average Grades</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="Student Name"
+          value={newStudentName}
+          onChange={(e) => setNewStudentName(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Grade"
+          value={newStudentGrade}
+          onChange={(e) => setNewStudentGrade(Number(e.target.value))}
+        />
+        <label>
+          <input
+            type="checkbox"
+            checked={isAdvancedCourse}
+            onChange={(e) => setIsAdvancedCourse(e.target.checked)}
+          />
+          Advanced Course
+        </label>
+        <button onClick={handleAddStudent}>Add Student</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Grade</th>
+            <th>Level</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {students.map((student, index) => (
+            <tr key={index}>
+              <td>{student.name}</td>
+              <td>{student.grade}</td>
+              <td>{student.isAdvanced ? 'Advanced' : 'Regular'}</td>
+              <td>
+                <button onClick={() => handleRemoveStudent(index)}>Remove</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <h2>Average: {calculateAverage().toFixed(2)}</h2>
+    </div>
+  );
 }
+
+export default App;
