@@ -29,6 +29,7 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    flex-wrap: wrap;
 }
 
 input[type="text"], input[type="number"], select {
@@ -82,4 +83,25 @@ button:hover {
 
 .remove-course:hover {
     background-color: #d32f2f;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    .grade-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    input[type="text"], input[type="number"], select {
+        width: 100%;
+    }
+
+    .calculate-button {
+        width: 100%;
+    }
 }
