@@ -55,4 +55,20 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {students.map((student, index
+          {students.map((student, index) => (
+            <tr key={index}>
+              <td>{student.name}</td>
+              <td>{student.grade}</td>
+              <td>
+                <button onClick={() => handleRemoveStudent(index)}>Remove</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <h2>Average: {calculateAverage().toFixed(2)}</h2>
+    </div>
+  );
+}
+
+export default App;
