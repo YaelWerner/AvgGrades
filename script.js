@@ -4,17 +4,15 @@ function App() {
   const [students, setStudents] = useState([]);
   const [newStudentName, setNewStudentName] = useState('');
   const [newStudentGrade, setNewStudentGrade] = useState(0);
-  const [isAdvancedCourse, setIsAdvancedCourse] = useState(false);
 
   const handleAddStudent = () => {
     if (newStudentName.trim() !== '' && newStudentGrade >= 0) {
       setStudents([
         ...students,
-        { name: newStudentName, grade: newStudentGrade, isAdvanced: isAdvancedCourse },
+        { name: newStudentName, grade: newStudentGrade },
       ]);
       setNewStudentName('');
       setNewStudentGrade(0);
-      setIsAdvancedCourse(false);
     }
   };
 
@@ -26,7 +24,7 @@ function App() {
 
   const calculateAverage = () => {
     if (students.length === 0) return 0;
-    const sum = students.reduce((acc, student) => acc + (student.isAdvanced ? student.grade * 1.5 : student.grade), 0);
+    const sum = students.reduce((acc, student) => acc + student.grade, 0);
     return sum / students.length;
   };
 
@@ -46,14 +44,6 @@ function App() {
           value={newStudentGrade}
           onChange={(e) => setNewStudentGrade(Number(e.target.value))}
         />
-        <label>
-          <input
-            type="checkbox"
-            checked={isAdvancedCourse}
-            onChange={(e) => setIsAdvancedCourse(e.target.checked)}
-          />
-          Advanced Course
-        </label>
         <button onClick={handleAddStudent}>Add Student</button>
       </div>
       <table>
@@ -61,7 +51,6 @@ function App() {
           <tr>
             <th>Name</th>
             <th>Grade</th>
-            <th>Level</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -70,7 +59,6 @@ function App() {
             <tr key={index}>
               <td>{student.name}</td>
               <td>{student.grade}</td>
-              <td>{student.isAdvanced ? 'Advanced' : 'Regular'}</td>
               <td>
                 <button onClick={() => handleRemoveStudent(index)}>Remove</button>
               </td>
