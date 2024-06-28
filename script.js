@@ -1,74 +1,39 @@
-import React, { useState } from 'react';
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('gradesForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        calculateAverage();
+    });
+});
 
-function App() {
-  const [students, setStudents] = useState([]);
-  const [newStudentName, setNewStudentName] = useState('');
-  const [newStudentGrade, setNewStudentGrade] = useState(0);
-
-  const handleAddStudent = () => {
-    if (newStudentName.trim() !== '' && newStudentGrade >= 0) {
-      setStudents([
-        ...students,
-        { name: newStudentName, grade: newStudentGrade },
-      ]);
-      setNewStudentName('');
-      setNewStudentGrade(0);
-    }
-  };
-
-  const handleRemoveStudent = (index) => {
-    const newStudents = [...students];
-    newStudents.splice(index, 1);
-    setStudents(newStudents);
-  };
-
-  const calculateAverage = () => {
-    if (students.length === 0) return 0;
-    const sum = students.reduce((acc, student) => acc + student.grade, 0);
-    return sum / students.length;
-  };
-
-  return (
-    <div>
-      <h1>Average Grades</h1>
-      <div>
-        <input
-          type="text"
-          placeholder="Student Name"
-          value={newStudentName}
-          onChange={(e) => setNewStudentName(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Grade"
-          value={newStudentGrade}
-          onChange={(e) => setNewStudentGrade(Number(e.target.value))}
-        />
-        <button onClick={handleAddStudent}>Add Student</button>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Grade</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {students.map((student, index) => (
-            <tr key={index}>
-              <td>{student.name}</td>
-              <td>{student.grade}</td>
-              <td>
-                <button onClick={() => handleRemoveStudent(index)}>Remove</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h2>Average: {calculateAverage().toFixed(2)}</h2>
-    </div>
-  );
+function addGradeRow() {
+    const gradeRow = document.createElement('div');
+    gradeRow.className = 'grade-row';
+    gradeRow.innerHTML = `
+        <input type="text" name="courseName" placeholder="שם הקורס" required>
+        <input type="number" name="grade" placeholder="ציון" min="0" max="100" required>
+        <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
+        <button type="button" class="remove-course" onclick="removeGradeRow(this)">הסר קורס</button>
+    `;
+    document.getElementById('gradesForm').appendChild(gradeRow);
 }
 
-export default App;
+function removeGradeRow(button) {
+    button.parentElement.remove();
+}
+
+function calculateAverage() {
+    const gradesForm = document.getElementById('gradesForm');
+    const gradeRows = gradesForm.getElementsByClassName('grade-row');
+    let totalWeightedGrades = 0;
+    let totalWeights = 0;
+
+    for (let row of gradeRows) {
+        const grade = parseFloat(row.querySelector('input[name="grade"]').value);
+        const weight = parseFloat(row.querySelector('input[name="weight"]').value);
+        totalWeightedGrades += grade * weight;
+        totalWeights += weight;
+    }
+
+    const average = totalWeights ? (totalWeightedGrades / totalWeights).toFixed(2) : 0;
+    document.getElementById('averageResult').innerText = `ממוצע משוקלל: ${average}`;
+}
