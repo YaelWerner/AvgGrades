@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('gradesForm').addEventListener('submit', function (e) {
         e.preventDefault();
         calculateAverage();
@@ -22,8 +22,7 @@ function removeGradeRow(button) {
 }
 
 function calculateAverage() {
-    const gradesForm = document.getElementById('gradesForm');
-    const gradeRows = gradesForm.getElementsByClassName('grade-row');
+    const gradeRows = document.getElementsByClassName('grade-row');
     let totalWeightedGrades = 0;
     let totalWeights = 0;
 
