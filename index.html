@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מחשבון ממוצע ציונים מתקדם</title>
+    <title>מחשבון ממוצע ציונים</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Rubik+Moonrocks&display=swap" rel="stylesheet">
     <style>
         body {
@@ -14,185 +14,77 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             box-sizing: border-box;
         }
         .container {
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
+            padding: 1rem;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
             width: 100%;
-            animation: fadeIn 0.5s ease-out;
+            max-width: 500px;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        h1, h2 {
+        h1 {
             font-family: 'Rubik Moonrocks', cursive;
             color: #3498db;
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-        }
-        h1 {
-            font-size: 2.5rem;
-        }
-        h2 {
-            font-size: 1.8rem;
-        }
-        h1:hover, h2:hover {
-            transform: scale(1.05);
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
         }
         .course-inputs {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 10px;
             margin-bottom: 1rem;
-            animation: slideIn 0.3s ease-out;
-            align-items: center;
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
         }
         input, select {
             padding: 0.7rem;
             border: 2px solid #3498db;
             border-radius: 8px;
             font-size: 1rem;
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 0;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #2980b9;
-            box-shadow: 0 0 0 2px rgba(41, 128, 185, 0.3);
-        }
-        input:invalid {
-            border-color: #e74c3c;
+            width: 100%;
+            box-sizing: border-box;
         }
         button {
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 0.7rem 1.2rem;
+            padding: 0.7rem;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
             font-weight: bold;
             text-transform: uppercase;
-        }
-        button:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        #courses-container {
-            margin-bottom: 1rem;
-        }
-        #result, #error-message, #course-list {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 8px;
-            transition: all 0.3s;
-            opacity: 0;
-            visibility: hidden;
-        }
-        #result.show, #error-message.show, #course-list.show {
-            opacity: 1;
-            visibility: visible;
-            animation: fadeInResult 0.5s ease-out;
-        }
-        #result.show {
-            background-color: #ecf0f1;
-        }
-        #error-message.show {
-            background-color: #ffdddd;
-            color: #d63031;
-        }
-        @keyframes fadeInResult {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            width: 100%;
+            margin-bottom: 0.5rem;
         }
         .remove-course {
             background-color: #e74c3c;
         }
-        .remove-course:hover {
-            background-color: #c0392b;
-        }
         .button-container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 0.5rem;
             margin-top: 1rem;
         }
-        .average-result {
-            font-size: 2rem;
-            color: #27ae60;
-            font-weight: bold;
-            animation: pulse 1s infinite alternate;
+        #result, #course-list {
+            margin-top: 1rem;
+            text-align: center;
         }
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
-        }
-        #course-list {
-            margin-top: 2rem;
-            border-top: 2px solid #3498db;
-            padding-top: 1rem;
-            overflow-x: auto;
-        }
-        #course-list table {
+        table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 1rem;
         }
-        #course-list th, #course-list td {
+        th, td {
+            border: 1px solid #3498db;
             padding: 0.5rem;
-            border-bottom: 1px solid #bdc3c7;
-            text-align: right;
+            text-align: center;
         }
-        #course-list th {
+        th {
             background-color: #3498db;
             color: white;
-        }
-        #course-list tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            h2 {
-                font-size: 1.5rem;
-            }
-            .course-inputs {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            input, select, button {
-                width: 100%;
-                margin-bottom: 0.5rem;
-            }
-            .button-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            #course-list th, #course-list td {
-                padding: 0.3rem;
-                font-size: 0.9rem;
-            }
         }
     </style>
 </head>
@@ -204,22 +96,8 @@
             <button onclick="addCourse()">הוסף קורס</button>
             <button onclick="calculateAverage()">חשב ממוצע</button>
         </div>
-        <div id="error-message"></div>
         <div id="result"></div>
-        <div id="course-list">
-            <h2>רשימת הקורסים</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>שם הקורס</th>
-                        <th>ציון</th>
-                        <th>נ"ז</th>
-                        <th>רמה</th>
-                    </tr>
-                </thead>
-                <tbody id="course-list-body"></tbody>
-            </table>
-        </div>
+        <div id="course-list"></div>
     </div>
 
     <script>
@@ -231,8 +109,8 @@
             courseDiv.className = 'course-inputs';
             courseDiv.innerHTML = `
                 <input type="text" placeholder="שם הקורס (אופציונלי)" id="course-name-${courseCount}">
-                <input type="number" placeholder="ציון" id="course-grade-${courseCount}" min="0" max="100" required onchange="validateInput(this)">
-                <input type="number" placeholder="נ״ז" id="course-credits-${courseCount}" min="0" step="0.5" required onchange="validateInput(this)">
+                <input type="number" placeholder="ציון" id="course-grade-${courseCount}" min="0" max="100" required>
+                <input type="number" placeholder="נ״ז" id="course-credits-${courseCount}" min="0" step="0.5" required>
                 <select id="course-level-${courseCount}">
                     <option value="regular">רגיל</option>
                     <option value="advanced">מתקדם</option>
@@ -246,32 +124,9 @@
             button.parentElement.remove();
         }
 
-        function validateInput(input) {
-            if (input.validity.valid) {
-                input.style.borderColor = '#3498db';
-            } else {
-                input.style.borderColor = '#e74c3c';
-                if (input.value < 0) {
-                    showError(`שגיאה: ${input.placeholder} לא יכול להיות שלילי`);
-                } else {
-                    showError(`שגיאה: ${input.placeholder} חייב להיות בין ${input.min} ל-${input.max}`);
-                }
-            }
-        }
-
-        function showError(message) {
-            const errorElement = document.getElementById('error-message');
-            errorElement.textContent = message;
-            errorElement.classList.add('show');
-            setTimeout(() => {
-                errorElement.classList.remove('show');
-            }, 5000);
-        }
-
         function calculateAverage() {
             let totalWeightedGrade = 0;
             let totalWeightedCredits = 0;
-            let hasError = false;
             let courseList = [];
 
             for (let i = 1; i <= courseCount; i++) {
@@ -281,16 +136,15 @@
                 const levelSelect = document.getElementById(`course-level-${i}`);
 
                 if (gradeInput && creditsInput && levelSelect) {
-                    if (!gradeInput.validity.valid || !creditsInput.validity.valid) {
-                        showError("אנא תקן את השגיאות לפני החישוב");
-                        hasError = true;
-                        break;
-                    }
-
                     const name = nameInput ? nameInput.value : `קורס ${i}`;
                     const grade = parseFloat(gradeInput.value);
                     const credits = parseFloat(creditsInput.value);
                     const level = levelSelect.value;
+
+                    if (isNaN(grade) || isNaN(credits) || grade < 0 || grade > 100 || credits < 0) {
+                        alert("נא להזין ערכים תקינים לכל הקורסים.");
+                        return;
+                    }
 
                     const weightMultiplier = level === 'advanced' ? 1.5 : 1;
                     totalWeightedGrade += grade * credits * weightMultiplier;
@@ -300,43 +154,31 @@
                 }
             }
 
-            const resultElement = document.getElementById('result');
-            const courseListElement = document.getElementById('course-list');
-            if (!hasError) {
-                if (totalWeightedCredits > 0) {
-                    const average = (totalWeightedGrade / totalWeightedCredits).toFixed(2);
-                    resultElement.innerHTML = `
-                        <p>הממוצע המשוקלל שלך הוא:</p>
-                        <div class="average-result">${average}</div>
-                    `;
-                    resultElement.classList.add('show');
-                    updateCourseList(courseList);
-                    courseListElement.classList.add('show');
-                } else {
-                    showError("אנא הזן לפחות קורס אחד עם ציון ונקודות זכות תקינים");
-                }
+            if (totalWeightedCredits > 0) {
+                const average = (totalWeightedGrade / totalWeightedCredits).toFixed(2);
+                document.getElementById('result').innerHTML = `<h2>הממוצע המשוקלל שלך: ${average}</h2>`;
+                updateCourseList(courseList);
             } else {
-                resultElement.classList.remove('show');
-                courseListElement.classList.remove('show');
+                alert("אנא הזן לפחות קורס אחד עם ציון ונקודות זכות תקינים.");
             }
         }
 
         function updateCourseList(courseList) {
-            const courseListBody = document.getElementById('course-list-body');
-            courseListBody.innerHTML = '';
+            const courseListElement = document.getElementById('course-list');
+            let html = '<h3>רשימת הקורסים</h3><table><tr><th>שם הקורס</th><th>ציון</th><th>נ"ז</th><th>רמה</th></tr>';
             courseList.forEach(course => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
+                html += `<tr>
                     <td>${course.name}</td>
                     <td>${course.grade}</td>
                     <td>${course.credits}</td>
                     <td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td>
-                `;
-                courseListBody.appendChild(row);
+                </tr>`;
             });
+            html += '</table>';
+            courseListElement.innerHTML = html;
         }
 
-        // Add initial course input
+        // הוספת קורס ראשוני
         addCourse();
     </script>
 </body>
