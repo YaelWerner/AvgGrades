@@ -25,13 +25,18 @@
             width: 100%;
             max-width: 500px;
         }
-        h1 {
+        h1, h2 {
             font-family: 'Rubik Moonrocks', cursive;
             color: #3498db;
             text-align: center;
             margin-bottom: 1rem;
-            font-size: 2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        h2 {
+            font-size: 1.5rem;
         }
         .course-inputs {
             display: flex;
@@ -58,9 +63,16 @@
             text-transform: uppercase;
             width: 100%;
             margin-bottom: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
         }
         .remove-course {
             background-color: #e74c3c;
+        }
+        .remove-course:hover {
+            background-color: #c0392b;
         }
         .button-container {
             display: flex;
@@ -71,20 +83,40 @@
         #result, #course-list {
             margin-top: 1rem;
             text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
-        table {
+        #result.show, #course-list.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        #result {
+            background-color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .average-result {
+            font-size: 1.5rem;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        #course-list table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
         }
-        th, td {
-            border: 1px solid #3498db;
+        #course-list th, #course-list td {
             padding: 0.5rem;
-            text-align: center;
+            border-bottom: 1px solid #bdc3c7;
+            text-align: right;
         }
-        th {
+        #course-list th {
             background-color: #3498db;
             color: white;
+        }
+        #course-list tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
@@ -154,18 +186,28 @@
                 }
             }
 
+            const resultElement = document.getElementById('result');
+            const courseListElement = document.getElementById('course-list');
+
             if (totalWeightedCredits > 0) {
                 const average = (totalWeightedGrade / totalWeightedCredits).toFixed(2);
-                document.getElementById('result').innerHTML = `<h2>הממוצע המשוקלל שלך: ${average}</h2>`;
+                resultElement.innerHTML = `
+                    <p>הממוצע המשוקלל שלך הוא:</p>
+                    <div class="average-result">${average}</div>
+                `;
+                resultElement.classList.add('show');
                 updateCourseList(courseList);
+                courseListElement.classList.add('show');
             } else {
                 alert("אנא הזן לפחות קורס אחד עם ציון ונקודות זכות תקינים.");
+                resultElement.classList.remove('show');
+                courseListElement.classList.remove('show');
             }
         }
 
         function updateCourseList(courseList) {
-            const courseListElement = document.getElementById('course-list');
-            let html = '<h3>רשימת הקורסים</h3><table><tr><th>שם הקורס</th><th>ציון</th><th>נ"ז</th><th>רמה</th></tr>';
+            const courseListBody = document.getElementById('course-list');
+            let html = '<h2>רשימת הקורסים</h2><table><thead><tr><th>שם הקורס</th><th>ציון</th><th>נ"ז</th><th>רמה</th></tr></thead><tbody>';
             courseList.forEach(course => {
                 html += `<tr>
                     <td>${course.name}</td>
@@ -174,8 +216,8 @@
                     <td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td>
                 </tr>`;
             });
-            html += '</table>';
-            courseListElement.innerHTML = html;
+            html += '</tbody></table>';
+            courseListBody.innerHTML = html;
         }
 
         // הוספת קורס ראשוני
