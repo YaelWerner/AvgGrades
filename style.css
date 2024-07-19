@@ -1,107 +1,195 @@
 body {
-    font-family: 'Arial', sans-serif;
-    direction: rtl;
-    text-align: center;
-    background: url('Purple and Blue Gradient Modern Desktop Wallpaper.png') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
+    font-family: 'Heebo', sans-serif;
+    background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     margin: 0;
-    padding: 0;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
-    color: #fff;
-    font-size: 2.5em;
-    margin-bottom: 20px;
+    font-family: 'Rubik Moonrocks', cursive;
+    color: #3498db;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
-.grade-row {
+.course-inputs {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 1rem;
+    animation: slideIn 0.3s ease-out;
 }
 
-input[type="text"], input[type="number"], select {
-    width: 20%;
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+input, select {
+    padding: 0.7rem;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
     box-sizing: border-box;
-    margin: 5px 0;
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #000;
 }
 
 button {
-    background-color: #9c7bbc;
+    background-color: #3498db;
     color: white;
-    padding: 10px 20px;
-    margin: 10px 5px;
     border: none;
-    border-radius: 5px;
+    padding: 0.7rem;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s;
 }
 
 button:hover {
-    background-color: #9c7bbc;
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.calculate-button {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.2em;
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
-#averageResult {
-    margin-top: 20px;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #fff;
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-button {
+    flex-grow: 1;
+}
+
+.refresh-button {
+    background-color: #f39c12;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.refresh-button:hover {
+    background-color: #d35400;
 }
 
 .remove-course {
-    background-color: #9c7bbc;
+    background-color: #e74c3c;
 }
 
 .remove-course:hover {
-    background-color: #d32f2f;
+    background-color: #c0392b;
 }
 
-@media (max-width: 768px) {
+#result, #course-list {
+    margin-top: 1rem;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+#result.show, #course-list.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#result {
+    background-color: #ecf0f1;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.average-result {
+    font-size: 2rem;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+#course-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#course-list th, #course-list td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #bdc3c7;
+    text-align: right;
+}
+
+#course-list th {
+    background-color: #3498db;
+    color: white;
+}
+
+#course-list tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
     .container {
-        width: 90%;
-        margin: 20px auto;
-        padding: 10px;
+        max-width: 800px;
+        padding: 2rem;
     }
-
-    .grade-row {
-        flex-direction: column;
-        align-items: stretch;
+    .course-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
     }
-
-    input[type="text"], input[type="number"], select {
+    .course-inputs > * {
         width: 100%;
     }
-
-    .calculate-button {
-        width: 100%;
+    .button-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .action-buttons {
+        order: 2;
+    }
+    .action-button {
+        flex-grow: 0;
+        padding: 0.7rem 2rem;
+    }
+    .refresh-button {
+        order: 1;
+        margin-right: 1rem;
+    }
+    .remove-course {
+        grid-column: 1 / -1;
     }
 }
