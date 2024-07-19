@@ -1,51 +1,98 @@
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('gradesForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        calculateAverage();
-    });
-});
+let courseCount = 0;
 
-function addGradeRow() {
-    const gradeRow = document.createElement('div');
-    gradeRow.className = 'grade-row';
-    gradeRow.innerHTML = `
-        <input type="text" name="courseName" placeholder="שם הקורס">
-        <input type="number" name="grade" placeholder="ציון" min="0" max="100" required>
-        <input type="number" name="weight" placeholder="משקל" min="0" max="100" required>
-        <select name="level">
-            <option value="regular">רגילה</option>
-            <option value="advanced">מתקדמת</option>
+function addCourse() {
+    courseCount++;
+    const courseDiv = document.createElement('div');
+    courseDiv.className = 'course-inputs';
+    courseDiv.innerHTML = `
+        <input type="text" placeholder="שם הקורס (אופציונלי)" id="course-name-${courseCount}">
+        <input type="number" placeholder="נ״ז" id="course-credits-${courseCount}" min="0" step="0.5" required>
+        <input type="number" placeholder="ציון" id="course-grade-${courseCount}" min="0" max="100" required>
+        <select id="course-level-${courseCount}">
+            <option value="regular">רגיל</option>
+            <option value="advanced">מתקדם</option>
         </select>
-        <button type="button" class="remove-course" onclick="removeGradeRow(this)">הסר קורס</button>
+        <button class="remove-course" onclick="removeCourse(this)">הסר</button>
     `;
-    const lastGradeRow = document.querySelector('#gradesForm .grade-row:last-of-type');
-    if (lastGradeRow) {
-        lastGradeRow.after(gradeRow);
-    } else {
-        const calculateButton = document.querySelector('.calculate-button');
-        document.getElementById('gradesForm').insertBefore(gradeRow, calculateButton);
-    }
+    document.getElementById('courses-container').appendChild(courseDiv);
 }
 
-function removeGradeRow(button) {
+function removeCourse(button) {
     button.parentElement.remove();
 }
 
 function calculateAverage() {
-    const gradeRows = document.getElementsByClassName('grade-row');
-    let totalWeightedGrades = 0;
-    let totalWeights = 0;
+    let totalWeightedGrade = 0;
+    let totalWeightedCredits = 0;
+    let courseList = [];
 
-    for (let row of gradeRows) {
-        const grade = parseFloat(row.querySelector('input[name="grade"]').value);
-        const weight = parseFloat(row.querySelector('input[name="weight"]').value);
-        const level = row.querySelector('select[name="level"]').value;
-        const adjustedWeight = level === 'advanced' ? weight * 1.5 : weight;
-        
-        totalWeightedGrades += grade * adjustedWeight;
-        totalWeights += adjustedWeight;
+    for (let i = 1; i <= courseCount; i++) {
+        const nameInput = document.getElementById(`course-name-${i}`);
+        const gradeInput = document.getElementById(`course-grade-${i}`);
+        const creditsInput = document.getElementById(`course-credits-${i}`);
+        const levelSelect = document.getElementById(`course-level-${i}`);
+
+        if (gradeInput && creditsInput && levelSelect) {
+            const name = nameInput ? nameInput.value : `קורס ${i}`;
+            const grade = parseFloat(gradeInput.value);
+            const credits = parseFloat(creditsInput.value);
+            const level = levelSelect.value;
+
+            if (isNaN(grade) || isNaN(credits) || grade < 0 || grade > 100 || credits < 0) {
+                alert("נא להזין ערכים תקינים לכל הקורסים.");
+                return;
+            }
+
+            const weightMultiplier = level === 'advanced' ? 1.5 : 1;
+            totalWeightedGrade += grade * credits * weightMultiplier;
+            totalWeightedCredits += credits * weightMultiplier;
+
+            courseList.push({ name, grade, credits, level });
+        }
     }
 
-    const average = totalWeights ? (totalWeightedGrades / totalWeights).toFixed(2) : 0;
-    document.getElementById('averageResult').innerText = `ממוצע משוקלל: ${average}`;
+    const resultElement = document.getElementById('result');
+    const courseListElement = document.getElementById('course-list');
+
+    if (totalWeightedCredits > 0) {
+        const average = (totalWeightedGrade / totalWeightedCredits).toFixed(2);
+        resultElement.innerHTML = `
+            <p>הממוצע המשוקלל שלך הוא:</p>
+            <div class="average-result">${average}</div>
+        `;
+        resultElement.classList.add('show');
+        updateCourseList(courseList);
+        courseListElement.classList.add('show');
+    } else {
+        alert("אנא הזן לפחות קורס אחד עם ציון ונקודות זכות תקינים.");
+        resultElement.classList.remove('show');
+        courseListElement.classList.remove('show');
+    }
 }
+
+function updateCourseList(courseList) {
+    const courseListBody = document.getElementById('course-list');
+    let html = '<h2>רשימת הקורסים</h2><table><thead><tr><th>שם הקורס</th><th>ציון</th><th>נ"ז</th><th>רמה</th></tr></thead><tbody>';
+    courseList.forEach(course => {
+        html += `<tr>
+            <td>${course.name}</td>
+            <td>${course.grade}</td>
+            <td>${course.credits}</td>
+            <td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td>
+        </tr>`;
+    });
+    html += '</tbody></table>';
+    courseListBody.innerHTML = html;
+}
+
+function resetCalculator() {
+    document.getElementById('courses-container').innerHTML = '';
+    document.getElementById('result').innerHTML = '';
+    document.getElementById('course-list').innerHTML = '';
+    document.getElementById('result').classList.remove('show');
+    document.getElementById('course-list').classList.remove('show');
+    courseCount = 0;
+    addCourse();
+}
+
+addCourse();
