@@ -79,6 +79,10 @@
             gap: 0.5rem;
             margin-top: 1rem;
         }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
         .action-button {
             flex-grow: 1;
         }
@@ -156,16 +160,19 @@
             }
             .button-container {
                 flex-direction: row;
-                justify-content: flex-end;
+                justify-content: center;
                 align-items: center;
+            }
+            .action-buttons {
+                order: 2;
             }
             .action-button {
                 flex-grow: 0;
                 padding: 0.7rem 2rem;
             }
             .refresh-button {
-                order: -1;
-                margin-right: auto;
+                order: 1;
+                margin-right: 1rem;
             }
             .remove-course {
                 grid-column: 1 / -1;
@@ -179,8 +186,10 @@
         <div id="courses-container"></div>
         <div class="button-container">
             <button class="refresh-button" onclick="resetCalculator()" title="נקה הכל">↻</button>
-            <button class="action-button" onclick="calculateAverage()">חשב ממוצע</button>
-            <button class="action-button" onclick="addCourse()">הוסף קורס</button>
+            <div class="action-buttons">
+                <button class="action-button" onclick="addCourse()">הוסף קורס</button>
+                <button class="action-button" onclick="calculateAverage()">חשב ממוצע</button>
+            </div>
         </div>
         <div id="result"></div>
         <div id="course-list"></div>
