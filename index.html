@@ -30,13 +30,23 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        h1 {
+        h1, h2 {
             font-family: 'Rubik Moonrocks', cursive;
             color: #3498db;
             text-align: center;
             margin-bottom: 1rem;
-            font-size: 2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+        }
+        h1:hover, h2:hover {
+            transform: scale(1.05);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
         }
         .course-inputs {
             display: flex;
@@ -56,6 +66,12 @@
             font-size: 1rem;
             width: 100%;
             box-sizing: border-box;
+            transition: all 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 0 2px rgba(41, 128, 185, 0.3);
         }
         button {
             background-color: #3498db;
@@ -73,15 +89,17 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+        .remove-course {
+            background-color: #e74c3c;
+        }
+        .remove-course:hover {
+            background-color: #c0392b;
+        }
         .button-container {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             gap: 0.5rem;
             margin-top: 1rem;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
         }
         .action-button {
             flex-grow: 1;
@@ -99,12 +117,6 @@
         .refresh-button:hover {
             background-color: #d35400;
         }
-        .remove-course {
-            background-color: #e74c3c;
-        }
-        .remove-course:hover {
-            background-color: #c0392b;
-        }
         #result, #course-list {
             margin-top: 1rem;
             text-align: center;
@@ -115,6 +127,11 @@
         #result.show, #course-list.show {
             opacity: 1;
             visibility: visible;
+            animation: fadeInResult 0.5s ease-out;
+        }
+        @keyframes fadeInResult {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         #result {
             background-color: #ecf0f1;
@@ -125,6 +142,16 @@
             font-size: 2rem;
             color: #27ae60;
             font-weight: bold;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+        #course-list {
+            margin-top: 2rem;
+            border-top: 2px solid #3498db;
+            padding-top: 1rem;
         }
         #course-list table {
             width: 100%;
@@ -143,41 +170,6 @@
         #course-list tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-
-        /* Desktop styles */
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 800px;
-                padding: 2rem;
-            }
-            .course-inputs {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-            }
-            .course-inputs > * {
-                width: 100%;
-            }
-            .button-container {
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-            }
-            .action-buttons {
-                order: 2;
-            }
-            .action-button {
-                flex-grow: 0;
-                padding: 0.7rem 2rem;
-            }
-            .refresh-button {
-                order: 1;
-                margin-right: 1rem;
-            }
-            .remove-course {
-                grid-column: 1 / -1;
-            }
-        }
     </style>
 </head>
 <body>
@@ -185,11 +177,9 @@
         <h1>מחשבון ממוצע ציונים</h1>
         <div id="courses-container"></div>
         <div class="button-container">
+            <button class="action-button" onclick="addCourse()">הוסף קורס</button>
+            <button class="action-button" onclick="calculateAverage()">חשב ממוצע</button>
             <button class="refresh-button" onclick="resetCalculator()" title="נקה הכל">↻</button>
-            <div class="action-buttons">
-                <button class="action-button" onclick="addCourse()">הוסף קורס</button>
-                <button class="action-button" onclick="calculateAverage()">חשב ממוצע</button>
-            </div>
         </div>
         <div id="result"></div>
         <div id="course-list"></div>
@@ -204,8 +194,8 @@
             courseDiv.className = 'course-inputs';
             courseDiv.innerHTML = `
                 <input type="text" placeholder="שם הקורס (אופציונלי)" id="course-name-${courseCount}">
-                <input type="number" placeholder="נ״ז" id="course-credits-${courseCount}" min="0" step="0.5" required>
                 <input type="number" placeholder="ציון" id="course-grade-${courseCount}" min="0" max="100" required>
+                <input type="number" placeholder="נ״ז" id="course-credits-${courseCount}" min="0" step="0.5" required>
                 <select id="course-level-${courseCount}">
                     <option value="regular">רגיל</option>
                     <option value="advanced">מתקדם</option>
@@ -290,9 +280,10 @@
             document.getElementById('result').classList.remove('show');
             document.getElementById('course-list').classList.remove('show');
             courseCount = 0;
-            addCourse();
+            addCourse(); // הוספת קורס ראשוני לאחר האיפוס
         }
 
+        // הוספת קורס ראשוני
         addCourse();
     </script>
 </body>
