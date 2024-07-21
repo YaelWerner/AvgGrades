@@ -26,7 +26,7 @@
 
         body {
             font-family: 'Heebo', sans-serif;
-            background: var(--background-color);
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
             color: var(--text-color);
             display: flex;
             justify-content: center;
@@ -35,7 +35,7 @@
             margin: 0;
             padding: 10px;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
+            transition: color 0.3s;
         }
 
         .container {
@@ -45,6 +45,12 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 800px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
@@ -54,6 +60,12 @@
             margin-bottom: 1rem;
             font-size: 2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .course-inputs {
@@ -61,6 +73,7 @@
             grid-template-columns: 1fr 1fr 1fr 1fr auto;
             gap: 10px;
             margin-bottom: 1rem;
+            animation: slideIn 0.3s ease-out;
         }
 
         input, select {
@@ -87,6 +100,7 @@
         button:hover {
             opacity: 0.9;
             transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .button-container {
@@ -134,6 +148,7 @@
             text-align: center;
             font-size: 1.5rem;
             font-weight: bold;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .switch {
@@ -189,6 +204,21 @@
             margin-top: 1rem;
         }
 
+        .refresh-button {
+            background-color: #f39c12;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+
+        .refresh-button:hover {
+            background-color: #d35400;
+        }
+
     </style>
 </head>
 <body>
@@ -211,6 +241,7 @@
         <div id="courseList"></div>
         <div id="result"></div>
         <div class="button-container">
+            <button class="refresh-button" onclick="resetCalculator()" title="נקה הכל">↻</button>
             <button onclick="calculateFinalAverage()">חשב ממוצע סופי</button>
             <button class="download-button" onclick="downloadResults()">הורד תוצאות</button>
         </div>
@@ -298,7 +329,7 @@
             });
 
             const average = (totalWeightedGrade / totalWeightedCredits).toFixed(2);
-            document.getElementById('result').innerHTML = `הממוצע המשוקלל: ${average}`;
+            document.getElementById('result').innerHTML = `<div class="average-result">הממוצע המשוקלל: ${average}</div>`;
         }
 
         function calculateFinalAverage() {
@@ -314,7 +345,7 @@
         }
 
         function downloadResults() {
-            const average = document.getElementById('result').innerHTML.split(': ')[1];
+            const average = document.getElementById('result').innerText.split(': ')[1];
             let csvContent = "data:text/csv;charset=utf-8,שם הקורס,נ\"ז,ציון,רמה\n";
             
             courses.forEach(course => {
@@ -329,6 +360,16 @@
             link.setAttribute("download", "grade_calculation.csv");
             document.body.appendChild(link);
             link.click();
+        }
+
+        function resetCalculator() {
+            courses = [];
+            isFinalized = false;
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('courseList').innerHTML = '';
+            document.querySelector('.course-inputs').style.display = 'grid';
+            document.querySelector('.download-button').style.display = 'none';
+            resetForm();
         }
 
         document.getElementById('darkModeToggle').addEventListener('change', function() {
