@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מחשבון ממוצע ציונים</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Rubik+Moonrocks&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
-            --background-color: #ffffff;
+            --background-gradient: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            --container-bg: rgba(255, 255, 255, 0.9);
             --text-color: #333333;
             --primary-color: #3498db;
             --secondary-color: #2ecc71;
@@ -16,7 +18,8 @@
         }
 
         .dark-mode {
-            --background-color: #2c3e50;
+            --background-gradient: linear-gradient(120deg, #2c3e50 0%, #34495e 100%);
+            --container-bg: rgba(44, 62, 80, 0.9);
             --text-color: #ecf0f1;
             --primary-color: #3498db;
             --secondary-color: #2ecc71;
@@ -26,7 +29,7 @@
 
         body {
             font-family: 'Heebo', sans-serif;
-            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            background: var(--background-gradient);
             color: var(--text-color);
             display: flex;
             justify-content: center;
@@ -35,11 +38,11 @@
             margin: 0;
             padding: 10px;
             box-sizing: border-box;
-            transition: color 0.3s;
+            transition: background 0.3s, color 0.3s;
         }
 
         .container {
-            background-color: var(--background-color);
+            background-color: var(--container-bg);
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -243,7 +246,7 @@
         <div class="button-container">
             <button class="refresh-button" onclick="resetCalculator()" title="נקה הכל">↻</button>
             <button onclick="calculateFinalAverage()">חשב ממוצע סופי</button>
-            <button class="download-button" onclick="downloadResults()">הורד תוצאות</button>
+            <button class="download-button" onclick="downloadResults()">הורד תוצאות (PDF)</button>
         </div>
     </div>
 
@@ -345,21 +348,29 @@
         }
 
         function downloadResults() {
-            const average = document.getElementById('result').innerText.split(': ')[1];
-            let csvContent = "data:text/csv;charset=utf-8,שם הקורס,נ\"ז,ציון,רמה\n";
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
             
-            courses.forEach(course => {
-                csvContent += `${course.name},${course.credits},${course.grade},${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}\n`;
+            doc.addFont("https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap", "Heebo", "normal");
+            doc.setFont("Heebo");
+            
+            doc.setR2L(true);
+            doc.setFontSize(20);
+            doc.text("תוצאות חישוב ממוצע ציונים", 200, 20, null, null, "right");
+            
+            doc.setFontSize(12);
+            let yPosition = 40;
+            
+            courses.forEach((course, index) => {
+                doc.text(`${index + 1}. ${course.name}: ציון - ${course.grade}, נ"ז - ${course.credits}, רמה - ${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}`, 200, yPosition, null, null, "right");
+                yPosition += 10;
             });
-
-            csvContent += `\nממוצע משוקלל,${average}`;
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "grade_calculation.csv");
-            document.body.appendChild(link);
-            link.click();
+            
+            const average = document.getElementById('result').innerText.split(': ')[1];
+            doc.setFontSize(16);
+            doc.text(`הממוצע המשוקלל: ${average}`, 200, yPosition + 10, null, null, "right");
+            
+            doc.save("grade_calculation.pdf");
         }
 
         function resetCalculator() {
