@@ -43,11 +43,11 @@
 
         .container {
             background-color: var(--container-bg);
-            padding: 1rem;
+            padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 95%;
+            max-width: 800px;
             animation: fadeIn 0.5s ease-out;
         }
 
@@ -61,7 +61,7 @@
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 1rem;
-            font-size: 1.5rem;
+            font-size: 2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             animation: slideIn 0.5s ease-out;
         }
@@ -73,7 +73,7 @@
 
         .course-inputs {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
             gap: 10px;
             margin-bottom: 1rem;
             animation: slideIn 0.3s ease-out;
@@ -86,8 +86,6 @@
             font-size: 1rem;
             background-color: var(--input-background);
             color: var(--text-color);
-            width: 100%;
-            box-sizing: border-box;
         }
 
         button {
@@ -100,7 +98,6 @@
             font-weight: bold;
             text-transform: uppercase;
             transition: all 0.3s;
-            width: 100%;
         }
 
         button:hover {
@@ -111,14 +108,13 @@
 
         .button-container {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             gap: 0.5rem;
             margin-top: 1rem;
         }
 
         #courseList {
             margin-top: 2rem;
-            overflow-x: auto;
         }
 
         #courseList table {
@@ -140,7 +136,6 @@
         .edit-button, .remove-button {
             padding: 0.3rem 0.5rem;
             font-size: 0.8rem;
-            width: auto;
         }
 
         .edit-button {
@@ -154,18 +149,18 @@
         #result {
             margin-top: 2rem;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: bold;
             animation: fadeIn 0.5s ease-out;
         }
 
         .switch {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 20px;
+            left: 20px;
             display: inline-block;
-            width: 50px;
-            height: 28px;
+            width: 60px;
+            height: 34px;
         }
 
         .switch input {
@@ -190,8 +185,8 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
+            height: 26px;
+            width: 26px;
             left: 4px;
             bottom: 4px;
             background-color: white;
@@ -204,7 +199,7 @@
         }
 
         input:checked + .slider:before {
-            transform: translateX(22px);
+            transform: translateX(26px);
         }
 
         .download-button {
@@ -215,7 +210,7 @@
         .refresh-button {
             background-color: #f39c12;
             font-size: 1.5rem;
-            width: 100%;
+            width: 40px;
             height: 40px;
             display: flex;
             justify-content: center;
@@ -227,53 +222,6 @@
             background-color: #d35400;
         }
 
-        @media (min-width: 768px) {
-            .container {
-                padding: 2rem;
-                max-width: 800px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .course-inputs {
-                grid-template-columns: repeat(5, 1fr);
-            }
-
-            .button-container {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            button {
-                width: auto;
-            }
-
-            .refresh-button {
-                width: 40px;
-            }
-
-            #result {
-                font-size: 1.5rem;
-            }
-
-            .switch {
-                top: 20px;
-                left: 20px;
-                width: 60px;
-                height: 34px;
-            }
-
-            .slider:before {
-                height: 26px;
-                width: 26px;
-            }
-
-            input:checked + .slider:before {
-                transform: translateX(26px);
-            }
-        }
     </style>
 </head>
 <body>
@@ -303,7 +251,141 @@
     </div>
 
     <script>
-        // JavaScript remains the same as in the previous version
+        let courses = [];
+        let isFinalized = false;
+
+        function addCourse() {
+            const name = document.getElementById('courseName').value;
+            const credits = parseFloat(document.getElementById('courseCredits').value);
+            const grade = parseFloat(document.getElementById('courseGrade').value);
+            const level = document.getElementById('courseLevel').value;
+
+            if (!credits || !grade || grade < 0 || grade > 100 || credits < 0) {
+                alert("נא להזין ערכים תקינים.");
+                return;
+            }
+
+            courses.push({ name, credits, grade, level });
+            updateCourseList();
+            calculateAverage();
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('courseName').value = '';
+            document.getElementById('courseCredits').value = '';
+            document.getElementById('courseGrade').value = '';
+            document.getElementById('courseLevel').value = 'regular';
+        }
+
+        function updateCourseList() {
+            const courseListElement = document.getElementById('courseList');
+            let html = '<table><tr><th>שם הקורס</th><th>נ"ז</th><th>ציון</th><th>רמה</th><th>פעולות</th></tr>';
+            courses.forEach((course, index) => {
+                html += `
+                    <tr>
+                        <td>${course.name}</td>
+                        <td>${course.credits}</td>
+                        <td>${course.grade}</td>
+                        <td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td>
+                        <td>
+                            <button class="edit-button" onclick="editCourse(${index})">ערוך</button>
+                            <button class="remove-button" onclick="removeCourse(${index})">הסר</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            html += '</table>';
+            courseListElement.innerHTML = html;
+        }
+
+        function editCourse(index) {
+            const course = courses[index];
+            document.getElementById('courseName').value = course.name;
+            document.getElementById('courseCredits').value = course.credits;
+            document.getElementById('courseGrade').value = course.grade;
+            document.getElementById('courseLevel').value = course.level;
+            courses.splice(index, 1);
+            updateCourseList();
+            calculateAverage();
+        }
+
+        function removeCourse(index) {
+            courses.splice(index, 1);
+            updateCourseList();
+            calculateAverage();
+        }
+
+        function calculateAverage() {
+            if (courses.length === 0) {
+                document.getElementById('result').innerHTML = '';
+                return;
+            }
+
+            let totalWeightedGrade = 0;
+            let totalWeightedCredits = 0;
+
+            courses.forEach(course => {
+                const weightMultiplier = course.level === 'advanced' ? 1.5 : 1;
+                totalWeightedGrade += course.grade * course.credits * weightMultiplier;
+                totalWeightedCredits += course.credits * weightMultiplier;
+            });
+
+            const average = (totalWeightedGrade / totalWeightedCredits).toFixed(2);
+            document.getElementById('result').innerHTML = `<div class="average-result">הממוצע המשוקלל: ${average}</div>`;
+        }
+
+        function calculateFinalAverage() {
+            if (courses.length === 0) {
+                alert("אנא הוסף לפחות קורס אחד לפני חישוב הממוצע הסופי.");
+                return;
+            }
+
+            isFinalized = true;
+            calculateAverage();
+            document.querySelector('.course-inputs').style.display = 'none';
+            document.querySelector('.download-button').style.display = 'inline-block';
+        }
+
+        function downloadResults() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.addFont("https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap", "Heebo", "normal");
+            doc.setFont("Heebo");
+            
+            doc.setR2L(true);
+            doc.setFontSize(20);
+            doc.text("תוצאות חישוב ממוצע ציונים", 200, 20, null, null, "right");
+            
+            doc.setFontSize(12);
+            let yPosition = 40;
+            
+            courses.forEach((course, index) => {
+                doc.text(`${index + 1}. ${course.name}: ציון - ${course.grade}, נ"ז - ${course.credits}, רמה - ${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}`, 200, yPosition, null, null, "right");
+                yPosition += 10;
+            });
+            
+            const average = document.querySelector('.average-result').textContent.split(': ')[1];
+            doc.setFontSize(16);
+            doc.text(`הממוצע המשוקלל: ${average}`, 200, yPosition + 10, null, null, "right");
+            
+            doc.save("grade_calculation.pdf");
+        }
+
+        function resetCalculator() {
+            courses = [];
+            isFinalized = false;
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('courseList').innerHTML = '';
+            document.querySelector('.course-inputs').style.display = 'grid';
+            document.querySelector('.download-button').style.display = 'none';
+            resetForm();
+        }
+
+        document.getElementById('darkModeToggle').addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode');
+        });
     </script>
 </body>
 </html>
