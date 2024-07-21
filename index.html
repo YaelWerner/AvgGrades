@@ -306,19 +306,82 @@
         }
 
         function downloadResults() {
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // BOM for Hebrew support
-            csvContent += "שם הקורס,ציון,נ\"ז,רמה\n";
-            
-            courseListData.forEach(course => {
-                csvContent += `${course.name},${course.grade},${course.credits},${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}\n`;
-            });
-            
-            csvContent += `\nממוצע משוקלל,${calculatedAverage}`;
+            const htmlContent = `
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>תוצאות חישוב ממוצע ציונים</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #3498db;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .average {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>תוצאות חישוב ממוצע ציונים</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>שם הקורס</th>
+                <th>ציון</th>
+                <th>נ"ז</th>
+                <th>רמה</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${courseListData.map(course => `
+                <tr>
+                    <td>${course.name}</td>
+                    <td>${course.grade}</td>
+                    <td>${course.credits}</td>
+                    <td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+    <div class="average">הממוצע המשוקלל: ${calculatedAverage}</div>
+</body>
+</html>
+            `;
 
-            const encodedUri = encodeURI(csvContent);
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "תוצאות_חישוב_ממוצע.csv");
+            link.href = URL.createObjectURL(blob);
+            link.download = "תוצאות_חישוב_ממוצע.html";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
