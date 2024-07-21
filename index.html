@@ -16,6 +16,16 @@
             --input-background: #f3f4f6;
         }
 
+        .dark-mode {
+            --background-gradient: linear-gradient(120deg, #2c3e50 0%, #34495e 100%);
+            --container-bg: rgba(44, 62, 80, 0.9);
+            --text-color: #ecf0f1;
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --input-background: #34495e;
+        }
+
         body {
             font-family: 'Heebo', sans-serif;
             background: var(--background-gradient);
@@ -27,6 +37,7 @@
             margin: 0;
             padding: 10px;
             box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
         .container {
@@ -128,6 +139,15 @@
             font-weight: bold;
         }
 
+        .average-result {
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
         .refresh-button {
             background-color: #f39c12;
             font-size: 1.5rem;
@@ -141,6 +161,67 @@
 
         .refresh-button:hover {
             background-color: #d35400;
+        }
+
+        .switch {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .edit-button, .remove-button {
+            padding: 0.3rem 0.5rem;
+            font-size: 0.8rem;
+            margin: 0 2px;
+        }
+
+        .edit-button {
+            background-color: var(--secondary-color);
+        }
+
+        .remove-button {
+            background-color: var(--danger-color);
         }
 
         @media (min-width: 768px) {
@@ -166,6 +247,10 @@
     </style>
 </head>
 <body>
+    <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+    </label>
     <div class="container">
         <h1>מחשבון ממוצע ציונים</h1>
         <div class="course-inputs">
@@ -183,11 +268,13 @@
         <div class="button-container">
             <button class="refresh-button" onclick="resetCalculator()" title="נקה הכל">↻</button>
             <button onclick="calculateAverage()">חשב ממוצע</button>
+            <button onclick="downloadResults()">הורד רשימה</button>
         </div>
     </div>
 
     <script>
         let courses = [];
+        let editIndex = -1;
 
         function addCourse() {
             const name = document.getElementById('courseName').value;
@@ -200,16 +287,30 @@
                 return;
             }
 
-            courses.push({ name, credits, grade, level });
+            if (editIndex > -1) {
+                courses[editIndex] = { name, credits, grade, level };
+                editIndex = -1;
+            } else {
+                courses.push({ name, credits, grade, level });
+            }
             updateCourseList();
             resetForm();
         }
 
         function updateCourseList() {
             const courseListElement = document.getElementById('courseList');
-            let html = '<table><tr><th>שם הקורס</th><th>נ"ז</th><th>ציון</th><th>רמה</th></tr>';
-            courses.forEach(course => {
-                html += `<tr><td>${course.name}</td><td>${course.credits}</td><td>${course.grade}</td><td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td></tr>`;
+            let html = '<table><tr><th>שם הקורס</th><th>נ"ז</th><th>ציון</th><th>רמה</th><th>פעולות</th></tr>';
+            courses.forEach((course, index) => {
+                html += `<tr>
+                    <td>${course.name}</td>
+                    <td>${course.credits}</td>
+                    <td>${course.grade}</td>
+                    <td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td>
+                    <td>
+                        <button class="edit-button" onclick="editCourse(${index})">ערוך</button>
+                        <button class="remove-button" onclick="removeCourse(${index})">הסר</button>
+                    </td>
+                </tr>`;
             });
             html += '</table>';
             courseListElement.innerHTML = html;
@@ -220,6 +321,21 @@
             document.getElementById('courseCredits').value = '';
             document.getElementById('courseGrade').value = '';
             document.getElementById('courseLevel').value = 'regular';
+        }
+
+        function editCourse(index) {
+            const course = courses[index];
+            document.getElementById('courseName').value = course.name;
+            document.getElementById('courseCredits').value = course.credits;
+            document.getElementById('courseGrade').value = course.grade;
+            document.getElementById('courseLevel').value = course.level;
+            editIndex = index;
+        }
+
+        function removeCourse(index) {
+            courses.splice(index, 1);
+            updateCourseList();
+            calculateAverage();
         }
 
         function calculateAverage() {
@@ -247,6 +363,28 @@
             document.getElementById('result').innerHTML = '';
             resetForm();
         }
+
+        function downloadResults() {
+            let content = "שם הקורס,נ\"ז,ציון,רמה\n";
+            courses.forEach(course => {
+                content += `${course.name},${course.credits},${course.grade},${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}\n`;
+            });
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "רשימת_קורסים.txt");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        document.getElementById('darkModeToggle').addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode');
+        });
     </script>
 </body>
 </html>
