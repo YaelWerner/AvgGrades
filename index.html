@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מחשבון ממוצע ציונים</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Rubik+Moonrocks&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --background-gradient: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
@@ -15,16 +14,6 @@
             --secondary-color: #2ecc71;
             --danger-color: #e74c3c;
             --input-background: #f3f4f6;
-        }
-
-        .dark-mode {
-            --background-gradient: linear-gradient(120deg, #2c3e50 0%, #34495e 100%);
-            --container-bg: rgba(44, 62, 80, 0.9);
-            --text-color: #ecf0f1;
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --danger-color: #e74c3c;
-            --input-background: #34495e;
         }
 
         body {
@@ -38,16 +27,15 @@
             margin: 0;
             padding: 10px;
             box-sizing: border-box;
-            transition: background 0.3s, color 0.3s;
         }
 
         .container {
             background-color: var(--container-bg);
-            padding: 1rem;
+            padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 95%;
+            max-width: 500px;
             animation: fadeIn 0.5s ease-out;
         }
 
@@ -61,7 +49,7 @@
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 1rem;
-            font-size: 1.5rem;
+            font-size: 2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             animation: slideIn 0.5s ease-out;
         }
@@ -72,8 +60,8 @@
         }
 
         .course-inputs {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
             margin-bottom: 1rem;
             animation: slideIn 0.3s ease-out;
@@ -86,8 +74,6 @@
             font-size: 1rem;
             background-color: var(--input-background);
             color: var(--text-color);
-            width: 100%;
-            box-sizing: border-box;
         }
 
         button {
@@ -100,7 +86,6 @@
             font-weight: bold;
             text-transform: uppercase;
             transition: all 0.3s;
-            width: 100%;
         }
 
         button:hover {
@@ -111,14 +96,13 @@
 
         .button-container {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             gap: 0.5rem;
             margin-top: 1rem;
         }
 
         #courseList {
             margin-top: 2rem;
-            overflow-x: auto;
         }
 
         #courseList table {
@@ -137,85 +121,17 @@
             color: white;
         }
 
-        .edit-button, .remove-button {
-            padding: 0.3rem 0.5rem;
-            font-size: 0.8rem;
-            width: auto;
-        }
-
-        .edit-button {
-            background-color: var(--secondary-color);
-        }
-
-        .remove-button {
-            background-color: var(--danger-color);
-        }
-
         #result {
             margin-top: 2rem;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .switch {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: inline-block;
-            width: 50px;
-            height: 28px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-            border: 2px solid var(--primary-color);
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--primary-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(22px);
-        }
-
-        .download-button {
-            display: none;
-            margin-top: 1rem;
         }
 
         .refresh-button {
             background-color: #f39c12;
             font-size: 1.5rem;
-            width: 100%;
+            width: 40px;
             height: 40px;
             display: flex;
             justify-content: center;
@@ -233,54 +149,23 @@
                 max-width: 800px;
             }
 
-            h1 {
-                font-size: 2rem;
-            }
-
             .course-inputs {
+                display: grid;
                 grid-template-columns: repeat(5, 1fr);
+                gap: 1rem;
             }
 
             .button-container {
-                flex-direction: row;
-                justify-content: space-between;
+                justify-content: center;
             }
 
             button {
-                width: auto;
-            }
-
-            .refresh-button {
-                width: 40px;
-            }
-
-            #result {
-                font-size: 1.5rem;
-            }
-
-            .switch {
-                top: 20px;
-                left: 20px;
-                width: 60px;
-                height: 34px;
-            }
-
-            .slider:before {
-                height: 26px;
-                width: 26px;
-            }
-
-            input:checked + .slider:before {
-                transform: translateX(26px);
+                padding: 0.7rem 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <label class="switch">
-        <input type="checkbox" id="darkModeToggle">
-        <span class="slider"></span>
-    </label>
     <div class="container">
         <h1>מחשבון ממוצע ציונים</h1>
         <div class="course-inputs">
@@ -297,13 +182,71 @@
         <div id="result"></div>
         <div class="button-container">
             <button class="refresh-button" onclick="resetCalculator()" title="נקה הכל">↻</button>
-            <button onclick="calculateFinalAverage()">חשב ממוצע סופי</button>
-            <button class="download-button" onclick="downloadResults()">הורד תוצאות (PDF)</button>
+            <button onclick="calculateAverage()">חשב ממוצע</button>
         </div>
     </div>
 
     <script>
-        // JavaScript remains the same as in the previous version
+        let courses = [];
+
+        function addCourse() {
+            const name = document.getElementById('courseName').value;
+            const credits = parseFloat(document.getElementById('courseCredits').value);
+            const grade = parseFloat(document.getElementById('courseGrade').value);
+            const level = document.getElementById('courseLevel').value;
+
+            if (!name || isNaN(credits) || isNaN(grade)) {
+                alert("נא להזין את כל הפרטים");
+                return;
+            }
+
+            courses.push({ name, credits, grade, level });
+            updateCourseList();
+            resetForm();
+        }
+
+        function updateCourseList() {
+            const courseListElement = document.getElementById('courseList');
+            let html = '<table><tr><th>שם הקורס</th><th>נ"ז</th><th>ציון</th><th>רמה</th></tr>';
+            courses.forEach(course => {
+                html += `<tr><td>${course.name}</td><td>${course.credits}</td><td>${course.grade}</td><td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td></tr>`;
+            });
+            html += '</table>';
+            courseListElement.innerHTML = html;
+        }
+
+        function resetForm() {
+            document.getElementById('courseName').value = '';
+            document.getElementById('courseCredits').value = '';
+            document.getElementById('courseGrade').value = '';
+            document.getElementById('courseLevel').value = 'regular';
+        }
+
+        function calculateAverage() {
+            if (courses.length === 0) {
+                alert("אנא הוסף לפחות קורס אחד");
+                return;
+            }
+
+            let totalWeightedGrade = 0;
+            let totalCredits = 0;
+
+            courses.forEach(course => {
+                const weight = course.level === 'advanced' ? 1.5 : 1;
+                totalWeightedGrade += course.grade * course.credits * weight;
+                totalCredits += course.credits * weight;
+            });
+
+            const average = (totalWeightedGrade / totalCredits).toFixed(2);
+            document.getElementById('result').innerHTML = `<div class="average-result">הממוצע המשוקלל: ${average}</div>`;
+        }
+
+        function resetCalculator() {
+            courses = [];
+            document.getElementById('courseList').innerHTML = '';
+            document.getElementById('result').innerHTML = '';
+            resetForm();
+        }
     </script>
 </body>
 </html>
