@@ -366,7 +366,7 @@
                 yPosition += 10;
             });
             
-            const average = document.getElementById('result').innerText.split(': ')[1];
+            const average = document.querySelector('.average-result').textContent.split(': ')[1];
             doc.setFontSize(16);
             doc.text(`הממוצע המשוקלל: ${average}`, 200, yPosition + 10, null, null, "right");
             
