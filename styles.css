@@ -161,6 +161,8 @@ button:hover {
     justify-content: center;
     align-items: center;
     padding: 0;
+    
+        margin-top: 0;/* i added*/
 }
 
 .refresh-button:hover {
@@ -228,9 +230,14 @@ input:checked + .slider:before {
     background-color: var(--danger-color);
 }
 
-.calculate-average-button {
+/*.calculate-average-button {
     background-color: var(--secondary-color);
-}
+}*/
+ .calculate-average-button {
+        width: auto;
+        flex-grow: 1;
+        max-width: 50%;
+    }
 
 @media (min-width: 768px) {
     .container {
@@ -244,11 +251,24 @@ input:checked + .slider:before {
         gap: 1rem;
     }
 
-    .button-container {
+ /*   .button-container {
+      justify-content: center;
+    }*/
+.button-container {
+        display: flex;
         justify-content: center;
+        align-items: center;
+        gap: 1rem;
     }
 
     button {
         padding: 0.7rem 2rem;
     }
 }
+
+
+    
+
+   
+
+  
