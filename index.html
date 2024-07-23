@@ -55,19 +55,26 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 {
+        h1, h2, h3, h4, h5, h6 {
             font-family: 'Rubik Moonrocks', cursive;
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 1rem;
-            font-size: 2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            animation: slideIn 0.5s ease-out;
+            animation: slideInFromTop 0.5s ease-out;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
+        h1 { font-size: 2rem; }
+
+        @keyframes slideInFromTop {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .course-inputs {
@@ -76,6 +83,11 @@
             gap: 10px;
             margin-bottom: 1rem;
             animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         input, select {
@@ -236,6 +248,25 @@
             background-color: var(--danger-color);
         }
 
+        .calculate-average-button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .calculate-average-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         @media (min-width: 768px) {
             .container {
                 padding: 2rem;
@@ -249,11 +280,20 @@
             }
 
             .button-container {
+                display: flex;
                 justify-content: center;
+                align-items: center;
+                gap: 1rem;
             }
 
-            button {
-                padding: 0.7rem 2rem;
+            .calculate-average-button {
+                width: auto;
+                flex-grow: 1;
+                max-width: 50%;
+            }
+
+            .refresh-button {
+                margin-top: 0;
             }
         }
     </style>
@@ -279,7 +319,7 @@
         <div id="result"></div>
         <div class="button-container">
             <button class="refresh-button" onclick="resetCalculator()" title="נקה הכל">↻</button>
-            <button onclick="calculateAverage()">חשב ממוצע</button>
+            <button class="calculate-average-button" onclick="calculateAverage()">חשב ממוצע</button>
         </div>
     </div>
 
@@ -310,7 +350,7 @@
 
         function updateCourseList() {
             const courseListElement = document.getElementById('courseList');
-            let html = '<table><tr><th>שם הקורס</th><th>נ"ז</th><th>ציון</th><th>רמה</th><th>פעולות</th></tr>';
+            let html = '<h3>רשימת הקורסים</h3><table><tr><th>שם הקורס</th><th>נ"ז</th><th>ציון</th><th>רמה</th><th>פעולות</th></tr>';
             courses.forEach((course, index) => {
                 html += `<tr>
                     <td>${course.name}</td>
@@ -325,6 +365,13 @@
             });
             html += '</table>';
             courseListElement.innerHTML = html;
+
+            const headerElement = courseListElement.querySelector('h3');
+            if (headerElement) {
+                headerElement.style.animation = 'none';
+                headerElement.offsetHeight; // trigger reflow
+                headerElement.style.animation = null;
+            }
         }
 
         function resetForm() {
