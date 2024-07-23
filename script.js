@@ -1,3 +1,4 @@
+// Define all functions used in the HTML file
 let courses = [];
 let editIndex = -1;
 
@@ -105,6 +106,7 @@ function resetCalculator() {
     resetForm();
 }
 
+// Event listener for dark mode toggle
 document.getElementById('darkModeToggle').addEventListener('change', function() {
     document.body.classList.toggle('dark-mode');
 });
