@@ -29,7 +29,7 @@ function updateCourseList() {
     let html = '<h3>רשימת הקורסים</h3><table><tr><th>שם הקורס</th><th>נ"ז</th><th>ציון</th><th>רמה</th><th>פעולות</th></tr>';
     courses.forEach((course, index) => {
         html += `<tr>
-            <td>${course.name || 'לא צוין'}</td>
+            <td>${course.name}</td>
             <td>${course.credits}</td>
             <td>${course.grade}</td>
             <td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td>
@@ -42,7 +42,6 @@ function updateCourseList() {
     html += '</table>';
     courseListElement.innerHTML = html;
 
-    // Trigger reanimation of the header
     const headerElement = courseListElement.querySelector('h3');
     if (headerElement) {
         headerElement.style.animation = 'none';
@@ -106,7 +105,6 @@ function resetCalculator() {
     resetForm();
 }
 
-// Toggle dark mode
 document.getElementById('darkModeToggle').addEventListener('change', function() {
     document.body.classList.toggle('dark-mode');
 });
