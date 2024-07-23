@@ -1,4 +1,3 @@
-// Define all functions used in the HTML file
 let courses = [];
 let editIndex = -1;
 
@@ -8,13 +7,23 @@ function addCourse() {
     const grade = parseFloat(document.getElementById('courseGrade').value);
     const level = document.getElementById('courseLevel').value;
 
-    // Validate inputs
-    if (!name || isNaN(credits) || isNaN(grade) || credits <= 0 || grade < 0 || grade > 100) {
-        alert("נא להזין את כל הפרטים וודא שציון ונ"ז תקינים");
+    if (isNaN(credits)) {
+        alert("נא להזין ערך מספרי לנ\"ז");
+        return;
+    }
+    if (credits < 0) {
+        alert("נ\"ז חייב להיות מספר חיובי");
+        return;
+    }
+    if (isNaN(grade)) {
+        alert("נא להזין ערך מספרי לציון");
+        return;
+    }
+    if (grade < 0 || grade > 100) {
+        alert("הציון חייב להיות בין 0 ל-100");
         return;
     }
 
-    // Check if editing an existing course
     if (editIndex > -1) {
         courses[editIndex] = { name, credits, grade, level };
         editIndex = -1;
@@ -30,7 +39,7 @@ function updateCourseList() {
     let html = '<h3>רשימת הקורסים</h3><table><tr><th>שם הקורס</th><th>נ"ז</th><th>ציון</th><th>רמה</th><th>פעולות</th></tr>';
     courses.forEach((course, index) => {
         html += `<tr>
-            <td>${course.name}</td>
+            <td>${course.name || 'ללא שם'}</td>
             <td>${course.credits}</td>
             <td>${course.grade}</td>
             <td>${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}</td>
@@ -42,13 +51,6 @@ function updateCourseList() {
     });
     html += '</table>';
     courseListElement.innerHTML = html;
-
-    const headerElement = courseListElement.querySelector('h3');
-    if (headerElement) {
-        headerElement.style.animation = 'none';
-        headerElement.offsetHeight; // trigger reflow
-        headerElement.style.animation = null;
-    }
 }
 
 function resetForm() {
@@ -93,7 +95,6 @@ function calculateAverage() {
     const resultElement = document.getElementById('result');
     resultElement.innerHTML = `<div class="average-result">הממוצע המשוקלל: ${average}</div>`;
     
-    // Trigger animation for result
     resultElement.firstChild.style.animation = 'none';
     resultElement.offsetHeight; // trigger reflow
     resultElement.firstChild.style.animation = null;
@@ -106,7 +107,6 @@ function resetCalculator() {
     resetForm();
 }
 
-// Event listener for dark mode toggle
 document.getElementById('darkModeToggle').addEventListener('change', function() {
     document.body.classList.toggle('dark-mode');
 });
