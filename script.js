@@ -8,8 +8,8 @@ function addCourse() {
     const level = document.getElementById('courseLevel').value;
 
     // Validate inputs
-    if (isNaN(credits) || isNaN(grade) || credits <= 0 || grade < 0 || grade > 100) {
-        alert("נא להזין ציון ונ"ז תקינים");
+    if (!name || isNaN(credits) || isNaN(grade) || credits <= 0 || grade < 0 || grade > 100) {
+        alert("נא להזין את כל הפרטים וודא שציון ונ"ז תקינים");
         return;
     }
 
