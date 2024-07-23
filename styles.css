@@ -106,6 +106,7 @@ button:hover {
 
 #courseList {
     margin-top: 2rem;
+ color: var(--primary-color);/*added!!!!!!!!!!!!!!!*/
 }
 
 #courseList table {
