@@ -116,7 +116,7 @@ button:hover {
     border-collapse: collapse;
 }
 
-#courseList th, #courseList td {
+#courseList th/*, #courseList td */{
     padding: 0.5rem;
     text-align: right;
     border-bottom: 1px solid var(--primary-color);
