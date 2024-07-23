@@ -140,12 +140,24 @@
         }
 
         .average-result {
-            animation: popIn 0.5s ease-out;
+            color: #2ecc71;
+            font-size: 1.8rem;
+            font-weight: bold;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            80% {
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .refresh-button {
@@ -268,7 +280,6 @@
         <div class="button-container">
             <button class="refresh-button" onclick="resetCalculator()" title="נקה הכל">↻</button>
             <button onclick="calculateAverage()">חשב ממוצע</button>
-            <button onclick="downloadResults()">הורד רשימה</button>
         </div>
     </div>
 
@@ -354,7 +365,13 @@
             });
 
             const average = (totalWeightedGrade / totalCredits).toFixed(2);
-            document.getElementById('result').innerHTML = `<div class="average-result">הממוצע המשוקלל: ${average}</div>`;
+            
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `<div class="average-result">הממוצע המשוקלל: ${average}</div>`;
+            
+            resultElement.firstChild.style.animation = 'none';
+            resultElement.offsetHeight; // trigger reflow
+            resultElement.firstChild.style.animation = null;
         }
 
         function resetCalculator() {
@@ -362,24 +379,6 @@
             document.getElementById('courseList').innerHTML = '';
             document.getElementById('result').innerHTML = '';
             resetForm();
-        }
-
-        function downloadResults() {
-            let content = "שם הקורס,נ\"ז,ציון,רמה\n";
-            courses.forEach(course => {
-                content += `${course.name},${course.credits},${course.grade},${course.level === 'advanced' ? 'מתקדם' : 'רגיל'}\n`;
-            });
-            const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
-            const link = document.createElement("a");
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute("href", url);
-                link.setAttribute("download", "רשימת_קורסים.txt");
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
         }
 
         document.getElementById('darkModeToggle').addEventListener('change', function() {
