@@ -235,6 +235,7 @@ input:checked + .slider:before {
 }*/
  .calculate-average-button {
         width: auto;
+        background-color: var(--secondary-color);
         flex-grow: 1;
         max-width: 50%;
     }
