@@ -132,7 +132,7 @@ button:hover {
 }
 
 .average-result {
-    color: #2ecc71;
+    color: #2ecc71; 
     font-size: 1.8rem;
     font-weight: bold;
     animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
