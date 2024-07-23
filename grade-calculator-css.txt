@@ -241,50 +241,10 @@ input:checked + .slider:before {
 }
 
 .calculate-average-button {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: white;
     border: none;
     padding: 0.7rem 2rem;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s;
-    font-size: 1.2rem;
-}
-
-.calculate-average-button:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-@media (min-width: 768px) {
-    .container {
-        padding: 2rem;
-        max-width: 800px;
-    }
-
-    .course-inputs {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 1rem;
-    }
-
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .calculate-average-button {
-        width: auto;
-        flex-grow: 1;
-        max-width: 50%;
-    }
-
-    .refresh-button {
-        margin-top: 0;
-    }
-}
