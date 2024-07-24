@@ -116,10 +116,24 @@ button:hover {
     border-collapse: collapse;
 }
 
+        .edit-button, .remove-button {
+            padding: 0.3rem 0.5rem;
+            font-size: 0.8rem;
+            margin: 0 2px;
+        }
+
+        .edit-button {
+            background-color: var(--secondary-color);
+        }
+
+        .remove-button {
+            background-color: var(--danger-color);
+        }
+
 /*#courseList th/*, #courseList td */{
-    padding: 0.5rem;
+/*    padding: 0.5rem;
     text-align: right;
-    border-bottom: 1px solid var(--primary-color);
+    border-bottom: 1px solid var(--primary-color);*/
 }
 
 #courseList th {
