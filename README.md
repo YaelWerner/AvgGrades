@@ -1,4 +1,4 @@
-# AVG-GRADES Web Application
+# AVG-GRADES Web Application in Hebrew 
 ## Overview
 AVG-GRADES is a web application that calculates and displays average grades for students. The application is designed to be simple, intuitive, and efficient, making it easy for students to input their grades and receive their average instantly.
 
